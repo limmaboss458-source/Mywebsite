@@ -50,34 +50,23 @@ h1{
   box-shadow:0 0 25px pink;
 }
 
-/* วงหัวใจ */
-.heartRing{
+/* ===== วงหัวใจ (เวอร์ชั่นเสถียร) ===== */
+
+.heartWrapper{
   position:absolute;
   top:50%;
   left:50%;
   width:360px;
   height:360px;
   transform:translate(-50%,-50%);
-  animation:spin 15s linear infinite;
   pointer-events:none;
 }
 
-@keyframes spin{
-  0%{transform:translate(-50%,-50%) rotate(0deg);}
-  100%{transform:translate(-50%,-50%) rotate(360deg);}
-}
-
-.heartRing span{
-  position:absolute;
-  font-size:22px;
-  color:#ff3366;
-}
-
-.orbit{
-  position:absolute;
+.heartRing{
+  position:relative;
   width:100%;
   height:100%;
-  animation:spin 12s linear infinite;
+  animation:spin 15s linear infinite;
 }
 
 @keyframes spin{
@@ -85,21 +74,19 @@ h1{
   to{transform:rotate(360deg);}
 }
 
-.orbit span{
+.heartRing span{
   position:absolute;
-  transform:translate(-50%,-50%);
   font-size:22px;
   color:#ff3366;
+  transform:translate(-50%,-50%);
 }
 
-/* กุหลาบ */
+/* ===== กุหลาบ ===== */
+
 .rose{
   position:fixed;
-  top:-50px;
-  width:35px;
-  height:35px;
-  background-image:url("https://cdn-icons-png.flaticon.com/512/616/616408.png");
-  background-size:cover;
+  top:-40px;
+  font-size:26px;
   animation:fall linear infinite;
 }
 
@@ -108,7 +95,8 @@ h1{
   100%{transform:translateY(110vh) rotate(360deg);}
 }
 
-/* หัวใจลอย */
+/* ===== หัวใจลอย ===== */
+
 .floating{
   position:fixed;
   bottom:-20px;
@@ -136,13 +124,17 @@ h1{
 <button id="btn" onclick="start()">Happy Valentine 💘</button>
 
 <div id="gallery">
-  <div class="heartRing">
-    <div class="orbit" id="ring"></div>
+
+  <!-- วงหัวใจ -->
+  <div class="heartWrapper">
+    <div class="heartRing" id="ring"></div>
   </div>
 
+  <!-- รูป -->
   <div class="slide"><img src="https://i.postimg.cc/WbMNWzn1/1_png.jpg"></div>
   <div class="slide"><img src="https://i.postimg.cc/yYq6ycFD/3_png.jpg"></div>
   <div class="slide"><img src="https://i.postimg.cc/ZKrb7ncK/4_png.jpg"></div>
+
 </div>
 
 <p id="loveText"></p>
@@ -155,12 +147,14 @@ h1{
 let player;
 let startSecond = 24;
 
+/* ===== ปุ่มเริ่ม ===== */
+
 function start(){
   document.getElementById("btn").style.display="none";
   document.getElementById("gallery").style.display="block";
 
-  showSlides();
   createRing();
+  showSlides();
   floatingHearts();
   fallingRoses();
   typeText("ขอให้เราสองคนมีความสุขด้วยกันไปนาน ๆ นะ 💕");
@@ -168,18 +162,25 @@ function start(){
   createPlayerAndPlay();
 }
 
-/* YouTube */
+/* ===== YouTube ===== */
+
 function createPlayerAndPlay(){
   player = new YT.Player('ytplayer',{
     height:'0',
     width:'0',
     videoId:'RRSvzw8TdwI',
-    playerVars:{ autoplay:1, controls:0, start:startSecond }
+    playerVars:{
+      autoplay:1,
+      controls:0,
+      start:startSecond
+    }
   });
 }
 
-/* สไลด์ */
+/* ===== สไลด์ ===== */
+
 let index=0;
+
 function showSlides(){
   let slides=document.getElementsByClassName("slide");
 
@@ -195,11 +196,12 @@ function showSlides(){
   setTimeout(showSlides,3000);
 }
 
-/* สร้างหัวใจเป็นวง */
+/* ===== สร้างวงหัวใจ ===== */
+
 function createRing(){
 
   let ring = document.getElementById("ring");
-  ring.innerHTML = "";
+  ring.innerHTML="";
 
   let total = 20;
   let radius = 150;
@@ -221,7 +223,8 @@ function createRing(){
   }
 }
 
-/* กุหลาบ */
+/* ===== กุหลาบ ===== */
+
 function fallingRoses(){
   setInterval(()=>{
     let r=document.createElement("div");
@@ -234,7 +237,8 @@ function fallingRoses(){
   },700);
 }
 
-/* หัวใจลอย */
+/* ===== หัวใจลอย ===== */
+
 function floatingHearts(){
   setInterval(()=>{
     let h=document.createElement("div");
@@ -247,7 +251,8 @@ function floatingHearts(){
   },500);
 }
 
-/* พิมพ์ข้อความ */
+/* ===== พิมพ์ข้อความ ===== */
+
 function typeText(text){
   let el=document.getElementById("loveText");
   el.innerHTML="";
