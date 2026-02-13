@@ -95,8 +95,18 @@ h1{
 }
 
 @keyframes fall{
-  0%{transform:translateY(0) rotate(0deg);}
-  100%{transform:translateY(110vh) rotate(360deg);}
+  0%{
+    transform:translateY(0) rotate(0deg);
+    opacity:1;
+  }
+  100%{
+    transform:translateY(110vh) rotate(360deg);
+    opacity:0.9;
+  }
+}
+
+.rose{
+  animation:fall linear infinite;
 }
 
 #loveText{
@@ -195,8 +205,10 @@ function showSlides(){
 /* หัวใจล้อม */
 function createRing(){
   let ring=document.getElementById("ring");
-  let total=18;
-  let radius=170;
+  let total=22;      // เพิ่มจำนวนหัวใจ
+  let radius=220;    // ขยายวงให้ใหญ่ขึ้น
+
+  ring.innerHTML=""; // กันบัคซ้อน
 
   for(let i=0;i<total;i++){
     let angle=(i/total)*2*Math.PI;
@@ -205,8 +217,12 @@ function createRing(){
 
     let span=document.createElement("span");
     span.innerHTML="❤";
-    span.style.left=190+x+"px";
-    span.style.top=190+y+"px";
+    span.style.position="absolute";
+    span.style.left=(200+x)+"px";
+    span.style.top=(200+y)+"px";
+    span.style.fontSize="24px";   // ขยายหัวใจ
+    span.style.color="#ff3366";
+
     ring.appendChild(span);
   }
 }
@@ -227,13 +243,30 @@ function floatingHearts(){
 /* กุหลาบตก */
 function fallingRoses(){
   setInterval(()=>{
-    let r=document.createElement("img");
-    r.src="https://upload.wikimedia.org/wikipedia/commons/3/35/Rose_icon.svg";
+    let r=document.createElement("div");
     r.className="rose";
     r.style.left=Math.random()*100+"vw";
-    r.style.animationDuration=(5+Math.random()*4)+"s";
+    r.style.animationDuration=(6+Math.random()*4)+"s";
+    r.style.position="fixed";
+    r.style.top="-50px";
+    r.style.width="40px";
+    r.style.height="40px";
+
+    r.innerHTML = `
+    <svg viewBox="0 0 100 100">
+      <path d="M50 20 
+               C30 0, 0 30, 30 50
+               C10 60, 30 90, 50 70
+               C70 90, 90 60, 70 50
+               C100 30, 70 0, 50 20Z"
+            fill="#e60039"/>
+      <circle cx="50" cy="50" r="8" fill="#b3002d"/>
+    </svg>
+    `;
+
     document.body.appendChild(r);
-    setTimeout(()=>r.remove(),8000);
+
+    setTimeout(()=>r.remove(),9000);
   },700);
 }
 
