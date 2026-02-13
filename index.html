@@ -2,6 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>For You 💖</title>
 
 <style>
@@ -14,70 +15,69 @@ overflow:hidden;
 }
 
 h1{
-margin-top:50px;
+margin-top:40px;
 color:white;
-text-shadow:0 0 15px #ff4d88;
+font-size:22px;
+text-shadow:0 0 10px #ff4d88;
 }
 
 button{
 padding:15px 40px;
 font-size:18px;
-background:white;
-color:#ff4d88;
 border:none;
-border-radius:50px;
-margin-top:20px;
+border-radius:40px;
+background:white;
+color:#ff2d75;
 cursor:pointer;
-box-shadow:0 0 20px pink;
+margin-top:15px;
+box-shadow:0 0 15px pink;
 }
 
 #gallery{
 display:none;
-margin-top:40px;
+margin-top:30px;
 position:relative;
-width:300px;
-height:300px;
+width:90vw;
+max-width:400px;
 margin-left:auto;
 margin-right:auto;
 }
 
 #slide{
-width:300px;
-height:300px;
-object-fit:cover;
+width:100%;
 border-radius:20px;
 box-shadow:0 0 25px white;
-position:absolute;
-top:0;
-left:0;
-z-index:2;
 }
 
-/* หัวใจล้อมแบบหมุน */
-.heartRing{
+/* หัวใจล้อม */
+.heart{
 position:absolute;
-font-size:22px;
+font-size:24px;
 color:#ff2d75;
-animation:spin 10s linear infinite;
+animation:pulse 1.5s infinite;
 }
 
-@keyframes spin{
-from{transform:rotate(0deg) translateX(160px) rotate(0deg);}
-to{transform:rotate(360deg) translateX(160px) rotate(-360deg);}
+@keyframes pulse{
+0%{transform:scale(1);}
+50%{transform:scale(1.4);}
+100%{transform:scale(1);}
 }
 
-/* กุหลาบตก */
-.rose{
+/* กลีบกุหลาบใหญ่ขึ้น */
+.petal{
 position:fixed;
-top:-50px;
-width:40px;
+top:-20px;
+width:20px;
+height:20px;
+background:red;
+border-radius:50%;
+opacity:0.8;
 animation:fall linear forwards;
-z-index:1;
 }
 
 @keyframes fall{
-0%{transform:translateY(0) rotate(0deg);opacity:1;}
-100%{transform:translateY(110vh) rotate(360deg);opacity:0;}
+0%{transform:translateY(0);}
+100%{transform:translateY(110vh);}
 }
 </style>
 </head>
@@ -85,72 +85,66 @@ z-index:1;
 <body>
 
 <h1>สุขสันต์วันวาเลนไทน์นะครับ 💕</h1>
-
-<button onclick="startAll()">กดตรงนี้สิ 💖</button>
+<button onclick="start()">กดตรงนี้สิ 💖</button>
 
 <div id="gallery">
 <img id="slide">
 </div>
 
 <script>
-let images = [
+let images=[
 "https://i.postimg.cc/WbMNWzn1/1_png.jpg",
 "https://i.postimg.cc/yYq6ycFD/3_png.jpg",
 "https://i.postimg.cc/ZKrb7ncK/4_png.jpg"
 ];
 
-let index = 0;
-let started = false;
+let index=0;
+let started=false;
 
-function startAll(){
+function start(){
 if(started) return;
-started = true;
+started=true;
 
 document.getElementById("gallery").style.display="block";
-showImage();
-setInterval(showImage,2000);
-setInterval(createRose,500);
-createHeartRing();
+show();
+setInterval(show,2000);
+setInterval(createPetal,250);
+createHearts();
 }
 
-function showImage(){
-document.getElementById("slide").src = images[index];
-index = (index + 1) % images.length;
+function show(){
+document.getElementById("slide").src=images[index];
+index=(index+1)%images.length;
 }
 
-function createHeartRing(){
-let gallery = document.getElementById("gallery");
+function createHearts(){
+let g=document.getElementById("gallery");
+let size=g.offsetWidth;
+let center=size/2;
 
 for(let i=0;i<8;i++){
-let heart = document.createElement("div");
-heart.className="heartRing";
-heart.innerHTML="❤";
-heart.style.top="140px";
-heart.style.left="140px";
-heart.style.animationDelay = (i * 1.2) + "s";
-gallery.appendChild(heart);
+let angle=(i/8)*2*Math.PI;
+let x=center+Math.cos(angle)*(center+10)-12;
+let y=center+Math.sin(angle)*(center+10)-12;
+
+let h=document.createElement("div");
+h.className="heart";
+h.innerHTML="❤";
+h.style.left=x+"px";
+h.style.top=y+"px";
+g.appendChild(h);
 }
 }
 
-function createRose(){
-let rose = document.createElementNS("http://www.w3.org/2000/svg","svg");
-rose.setAttribute("viewBox","0 0 100 100");
-rose.classList.add("rose");
-rose.style.left=Math.random()*100+"vw";
-rose.style.animationDuration=(4+Math.random()*3)+"s";
-
-rose.innerHTML = `
-<path d="M50 15 C65 0, 100 25, 50 70 C0 25, 35 0, 50 15 Z"
-fill="red"/>
-<circle cx="50" cy="75" r="8" fill="green"/>
-`;
-
-document.body.appendChild(rose);
-
-setTimeout(()=>{rose.remove();},7000);
+function createPetal(){
+let p=document.createElement("div");
+p.className="petal";
+p.style.left=Math.random()*100+"vw";
+p.style.animationDuration=(3+Math.random()*2)+"s";
+document.body.appendChild(p);
+setTimeout(()=>{p.remove();},5000);
 }
 </script>
 
 </body>
 </html>
-<!--test-->
