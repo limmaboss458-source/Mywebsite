@@ -12,25 +12,25 @@ body{
   text-align:center;
   background:linear-gradient(to bottom,#ffccd5,#fff0f3);
   font-family:sans-serif;
-  overflow:hidden;
+  overflow-x:hidden;
 }
 
 h1{
   margin-top:40px;
   color:#b3003c;
-  font-size:30px;
+  font-size:26px;
 }
 
 #btn{
-  margin-top:60px;
-  padding:18px 40px;
+  margin-top:50px;
+  padding:16px 30px;
   font-size:18px;
   background:#ff3366;
   color:white;
   border:none;
   border-radius:50px;
   cursor:pointer;
-  box-shadow:0 0 25px #ff99cc;
+  box-shadow:0 0 20px #ff99cc;
 }
 
 #gallery{
@@ -44,20 +44,22 @@ h1{
 }
 
 .slide img{
-  width:300px;
+  width:85vw;
+  max-width:340px;
   border-radius:20px;
-  box-shadow:0 0 30px pink;
+  box-shadow:0 0 25px pink;
 }
 
-/* วงหัวใจหมุน */
+/* หัวใจล้อม */
 .heartRing{
   position:absolute;
-  width:360px;
-  height:360px;
   top:50%;
   left:50%;
+  width:380px;
+  height:380px;
   transform:translate(-50%,-50%);
-  animation:spin 12s linear infinite;
+  animation:spin 15s linear infinite;
+  pointer-events:none;
 }
 
 @keyframes spin{
@@ -67,28 +69,15 @@ h1{
 
 .heartRing span{
   position:absolute;
-  font-size:22px;
+  font-size:20px;
   color:#ff3366;
-}
-
-/* กุหลาบตก */
-.rose{
-  position:fixed;
-  top:-40px;
-  width:25px;
-  animation:fall linear infinite;
-}
-
-@keyframes fall{
-  0%{transform:translateY(0) rotate(0deg);}
-  100%{transform:translateY(110vh) rotate(360deg);}
 }
 
 /* หัวใจลอย */
 .floating{
   position:fixed;
   bottom:-20px;
-  font-size:18px;
+  font-size:16px;
   animation:rise 6s linear infinite;
 }
 
@@ -97,10 +86,24 @@ h1{
   100%{transform:translateY(-110vh);}
 }
 
+/* กุหลาบตก */
+.rose{
+  position:fixed;
+  top:-40px;
+  width:22px;
+  animation:fall linear infinite;
+}
+
+@keyframes fall{
+  0%{transform:translateY(0) rotate(0deg);}
+  100%{transform:translateY(110vh) rotate(360deg);}
+}
+
 #loveText{
   margin-top:20px;
-  font-size:20px;
+  font-size:18px;
   color:#990033;
+  min-height:24px;
 }
 </style>
 </head>
@@ -111,7 +114,7 @@ h1{
 <button id="btn" onclick="start()">Happy Valentine 💘</button>
 
 <div id="gallery">
-  
+
   <div class="heartRing" id="ring"></div>
 
   <div class="slide"><img src="1.jpg"></div>
@@ -122,16 +125,58 @@ h1{
 
 <p id="loveText"></p>
 
+<div id="ytplayer"></div>
+
+<script src="https://www.youtube.com/iframe_api"></script>
+
 <script>
+
+let player;
+let startSecond = 30; // ⏱ เปลี่ยนวินาทีเริ่มเพลงได้ตรงนี้
 
 function start(){
   document.getElementById("btn").style.display="none";
   document.getElementById("gallery").style.display="block";
+
   showSlides();
-  createHeartRing();
-  createRoses();
-  createFloating();
+  createRing();
+  floatingHearts();
+  fallingRoses();
   typeText("ขอให้เราสองคนมีความสุขด้วยกันไปนาน ๆ นะ 💕");
+
+  createPlayerAndPlay();
+}
+
+/* สร้าง YouTube ตอนกดปุ่ม */
+function createPlayerAndPlay(){
+  player = new YT.Player('ytplayer',{
+    height:'0',
+    width:'0',
+    videoId:'RRSvzw8TdwI',
+    playerVars:{
+      autoplay:1,
+      controls:0,
+      start:startSecond
+    },
+    events:{
+      onReady:function(e){
+        e.target.mute();
+        e.target.playVideo();
+
+        let vol=0;
+        e.target.unMute();
+
+        let fade=setInterval(()=>{
+          if(vol>=50){
+            clearInterval(fade);
+          } else {
+            vol+=2;
+            e.target.setVolume(vol);
+          }
+        },200);
+      }
+    }
+  });
 }
 
 /* สไลด์ */
@@ -147,11 +192,11 @@ function showSlides(){
   setTimeout(showSlides,3000);
 }
 
-/* สร้างหัวใจล้อมรูป */
-function createHeartRing(){
+/* หัวใจล้อม */
+function createRing(){
   let ring=document.getElementById("ring");
-  let total=16;
-  let radius=160;
+  let total=18;
+  let radius=170;
 
   for(let i=0;i<total;i++){
     let angle=(i/total)*2*Math.PI;
@@ -160,27 +205,14 @@ function createHeartRing(){
 
     let span=document.createElement("span");
     span.innerHTML="❤";
-    span.style.left=180+x+"px";
-    span.style.top=180+y+"px";
+    span.style.left=190+x+"px";
+    span.style.top=190+y+"px";
     ring.appendChild(span);
   }
 }
 
-/* กุหลาบตก */
-function createRoses(){
-  setInterval(()=>{
-    let r=document.createElement("img");
-    r.src="https://upload.wikimedia.org/wikipedia/commons/3/35/Rose_icon.svg";
-    r.className="rose";
-    r.style.left=Math.random()*100+"vw";
-    r.style.animationDuration=(5+Math.random()*4)+"s";
-    document.body.appendChild(r);
-    setTimeout(()=>r.remove(),8000);
-  },700);
-}
-
 /* หัวใจลอย */
-function createFloating(){
+function floatingHearts(){
   setInterval(()=>{
     let h=document.createElement("div");
     h.innerHTML="💗";
@@ -190,6 +222,19 @@ function createFloating(){
     document.body.appendChild(h);
     setTimeout(()=>h.remove(),6000);
   },500);
+}
+
+/* กุหลาบตก */
+function fallingRoses(){
+  setInterval(()=>{
+    let r=document.createElement("img");
+    r.src="https://upload.wikimedia.org/wikipedia/commons/3/35/Rose_icon.svg";
+    r.className="rose";
+    r.style.left=Math.random()*100+"vw";
+    r.style.animationDuration=(5+Math.random()*4)+"s";
+    document.body.appendChild(r);
+    setTimeout(()=>r.remove(),8000);
+  },700);
 }
 
 /* พิมพ์ข้อความ */
