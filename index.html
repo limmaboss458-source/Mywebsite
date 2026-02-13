@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Happy Valentine 💖</title>
+<style>
+body{
+text-align:center;
+background:#ffe6f0;
+font-family:sans-serif;
+}
+button{
+padding:15px 40px;
+font-size:18px;
+background:#ff4d88;
+color:white;
+border:none;
+border-radius:50px;
+}
+img{
+width:300px;
+margin-top:20px;
+}
+</style>
+</head>
+<body>
+
+<h1>สุขสันต์วันวาเลนไทน์นะครับ 💕</h1>
+
+<button onclick="startSlide()">กดตรงนี้สิ 💖</button>
+
+<div id="gallery" style="display:none;">
+<img id="slide">
+</div>
+
+<script>
+let images = [
+"https://picsum.photos/300?1",
+"https://picsum.photos/300?2",
+"https://picsum.photos/300?3"
+];
+
+let index = 0;
+
+function startSlide(){
+document.getElementById("gallery").style.display="block";
+showImage();
+setInterval(showImage, 2000);
+}
+
+function showImage(){
+document.getElementById("slide").src = images[index];
+index = (index + 1) % images.length;
+}
+</script>
+
+</body>
+</html>
