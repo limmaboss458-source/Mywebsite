@@ -55,8 +55,45 @@ h1{
   position:absolute;
   top:50%;
   left:50%;
+  width:320px;
+  height:320px;
   transform:translate(-50%,-50%);
   pointer-events:none;
+}
+
+.orbit{
+  position:absolute;
+  width:100%;
+  height:100%;
+  animation:spin 12s linear infinite;
+}
+
+@keyframes spin{
+  from{transform:rotate(0deg);}
+  to{transform:rotate(360deg);}
+}
+
+.orbit span{
+  position:absolute;
+  transform:translate(-50%,-50%);
+  font-size:22px;
+  color:#ff3366;
+}
+
+/* กุหลาบ */
+.rose{
+  position:fixed;
+  top:-50px;
+  width:35px;
+  height:35px;
+  background-image:url("https://cdn-icons-png.flaticon.com/512/616/616408.png");
+  background-size:cover;
+  animation:fall linear infinite;
+}
+
+@keyframes fall{
+  0%{transform:translateY(0) rotate(0deg);}
+  100%{transform:translateY(110vh) rotate(360deg);}
 }
 
 /* หัวใจลอย */
@@ -70,23 +107,6 @@ h1{
 @keyframes rise{
   0%{transform:translateY(0);}
   100%{transform:translateY(-110vh);}
-}
-
-/* กุหลาบ */
-.rose{
-  position:fixed;
-  top:-40px;
-  width:20px;
-  height:20px;
-  background:red;
-  border-radius:50%;
-  animation:fall linear infinite;
-  box-shadow:0 0 8px rgba(255,0,0,0.6);
-}
-
-@keyframes fall{
-  0%{transform:translateY(0) rotate(0deg);}
-  100%{transform:translateY(110vh) rotate(360deg);}
 }
 
 #loveText{
@@ -104,7 +124,9 @@ h1{
 <button id="btn" onclick="start()">Happy Valentine 💘</button>
 
 <div id="gallery">
-  <div class="heartRing" id="ring"></div>
+  <div class="heartRing">
+    <div class="orbit" id="ring"></div>
+  </div>
 
   <div class="slide"><img src="https://i.postimg.cc/WbMNWzn1/1_png.jpg"></div>
   <div class="slide"><img src="https://i.postimg.cc/yYq6ycFD/3_png.jpg"></div>
@@ -112,7 +134,6 @@ h1{
 </div>
 
 <p id="loveText"></p>
-
 <div id="ytplayer"></div>
 
 <script src="https://www.youtube.com/iframe_api"></script>
@@ -127,6 +148,7 @@ function start(){
   document.getElementById("gallery").style.display="block";
 
   showSlides();
+  createRing();
   floatingHearts();
   fallingRoses();
   typeText("ขอให้เราสองคนมีความสุขด้วยกันไปนาน ๆ นะ 💕");
@@ -140,29 +162,7 @@ function createPlayerAndPlay(){
     height:'0',
     width:'0',
     videoId:'RRSvzw8TdwI',
-    playerVars:{
-      autoplay:1,
-      controls:0,
-      start:startSecond
-    },
-    events:{
-      onReady:function(e){
-        e.target.mute();
-        e.target.playVideo();
-
-        let vol=0;
-        e.target.unMute();
-
-        let fade=setInterval(()=>{
-          if(vol>=50){
-            clearInterval(fade);
-          } else {
-            vol+=2;
-            e.target.setVolume(vol);
-          }
-        },200);
-      }
-    }
+    playerVars:{ autoplay:1, controls:0, start:startSecond }
   });
 }
 
@@ -180,43 +180,45 @@ function showSlides(){
 
   slides[index-1].style.display="block";
 
-  setTimeout(createRing,200);
   setTimeout(showSlides,3000);
 }
 
-/* วงหัวใจรอบรูป */
+/* สร้างหัวใจเป็นวง */
 function createRing(){
 
-  let ring = document.getElementById("ring");
-  ring.innerHTML = "";
+  let ring=document.getElementById("ring");
+  ring.innerHTML="";
 
-  let img = document.querySelector(".slide img");
-  let rect = img.getBoundingClientRect();
-
-  let total = 20;
-  let radius = rect.width/2 + 30;
-
-  ring.style.width = rect.width + "px";
-  ring.style.height = rect.height + "px";
+  let total=18;
+  let radius=140;
+  let center=160;
 
   for(let i=0;i<total;i++){
 
-    let angle = (i/total)*2*Math.PI;
+    let angle=(i/total)*2*Math.PI;
 
-    let x = rect.width/2 + radius*Math.cos(angle);
-    let y = rect.height/2 + radius*Math.sin(angle);
+    let x=center + radius*Math.cos(angle);
+    let y=center + radius*Math.sin(angle);
 
-    let span = document.createElement("span");
-    span.innerHTML = "❤";
-    span.style.position = "absolute";
-    span.style.left = x + "px";
-    span.style.top = y + "px";
-    span.style.transform = "translate(-50%,-50%)";
-    span.style.fontSize = "22px";
-    span.style.color = "#ff3366";
+    let span=document.createElement("span");
+    span.innerHTML="❤";
+    span.style.left=x+"px";
+    span.style.top=y+"px";
 
     ring.appendChild(span);
   }
+}
+
+/* กุหลาบ */
+function fallingRoses(){
+  setInterval(()=>{
+    let r=document.createElement("div");
+    r.className="rose";
+    r.style.left=Math.random()*100+"vw";
+    r.style.animationDuration=(6+Math.random()*4)+"s";
+    document.body.appendChild(r);
+    setTimeout(()=>r.remove(),9000);
+  },800);
 }
 
 /* หัวใจลอย */
@@ -230,18 +232,6 @@ function floatingHearts(){
     document.body.appendChild(h);
     setTimeout(()=>h.remove(),6000);
   },500);
-}
-
-/* กุหลาบ */
-function fallingRoses(){
-  setInterval(()=>{
-    let r=document.createElement("div");
-    r.className="rose";
-    r.style.left=Math.random()*100+"vw";
-    r.style.animationDuration=(6+Math.random()*4)+"s";
-    document.body.appendChild(r);
-    setTimeout(()=>r.remove(),9000);
-  },700);
 }
 
 /* พิมพ์ข้อความ */
