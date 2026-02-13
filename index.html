@@ -1,151 +1,228 @@
 <!DOCTYPE html>
-<html>
+<html lang="th">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>For You 💖</title>
+<title>Happy Valentine 💖</title>
 
 <style>
+/* ====== STYLES ====== */
 body{
-margin:0;
-background:linear-gradient(to bottom,#ff9ecf,#ffcce6);
-font-family:sans-serif;
-text-align:center;
-overflow:hidden;
+  margin:0;
+  padding:0;
+  text-align:center;
+  background:linear-gradient(to bottom,#ffccd5,#fff0f3);
+  font-family:sans-serif;
+  overflow-x:hidden;
 }
 
 h1{
-margin-top:40px;
-color:white;
-font-size:22px;
-text-shadow:0 0 10px #ff4d88;
+  margin-top:40px;
+  color:#b3003c;
+  font-size:32px;
+  text-shadow:0 0 10px #ff6699;
 }
 
-button{
-padding:15px 40px;
-font-size:18px;
-border:none;
-border-radius:40px;
-background:white;
-color:#ff2d75;
-cursor:pointer;
-margin-top:15px;
-box-shadow:0 0 15px pink;
+#btn{
+  margin-top:60px;
+  padding:18px 40px;
+  font-size:19px;
+  background:#ff3366;
+  color:white;
+  border:none;
+  border-radius:50px;
+  cursor:pointer;
+  box-shadow:0 0 24px #ff99cc;
 }
 
 #gallery{
-display:none;
-margin-top:30px;
-position:relative;
-width:90vw;
-max-width:400px;
-margin-left:auto;
-margin-right:auto;
+  display:none;
+  margin-top:35px;
+  position:relative;
+  width:90vw;
+  max-width:450px;
+  margin:auto;
 }
 
-#slide{
-width:100%;
-border-radius:20px;
-box-shadow:0 0 25px white;
+.slide{
+  display:none;
 }
 
-/* หัวใจล้อม */
-.heart{
-position:absolute;
-font-size:24px;
-color:#ff2d75;
-animation:pulse 1.5s infinite;
+.slide img{
+  width:100%;
+  border-radius:25px;
+  box-shadow:0 0 30px #ff99bb;
 }
 
-@keyframes pulse{
-0%{transform:scale(1);}
-50%{transform:scale(1.4);}
-100%{transform:scale(1);}
+/* หัวใจล้อมรูป */
+.heartCircle{
+  position:absolute;
+  font-size:25px;
+  color:#ff3366;
+  text-shadow:0 0 10px #ff6699;
+  animation:beat 1.6s infinite;
 }
 
-/* กลีบกุหลาบใหญ่ขึ้น */
-.petal{
-position:fixed;
-top:-20px;
-width:20px;
-height:20px;
-background:red;
-border-radius:50%;
-opacity:0.8;
-animation:fall linear forwards;
+@keyframes beat {
+  0%{transform:scale(1);}
+  50%{transform:scale(1.4);}
+  100%{transform:scale(1);}
+}
+
+/* หัวใจลอย */
+.floatingHeart{
+  position:fixed;
+  bottom:-30px;
+  width:20px;
+  animation:rise 6s linear infinite;
+}
+
+@keyframes rise {
+  0%{transform:translateY(0) scale(1);}
+  100%{transform:translateY(-105vh) scale(1.4);}
+}
+
+/* กลีบกุหลาบตก */
+.rosePetal{
+  position:fixed;
+  top:-30px;
+  width:18px;
+  animation:fall linear infinite;
 }
 
 @keyframes fall{
-0%{transform:translateY(0);}
-100%{transform:translateY(110vh);}
+  0%{transform:translateY(0) rotate(0deg);}
+  100%{transform:translateY(115vh) rotate(360deg);}
+}
+
+/* ข้อความรัก */
+#loveText{
+  opacity:0;
+  margin-top:25px;
+  color:#990033;
+  font-size:21px;
+  text-shadow:0 0 9px #ff6699;
+  min-height:30px;
 }
 </style>
 </head>
 
 <body>
 
-<h1>สุขสันต์วันวาเลนไทน์นะครับ 💕</h1>
-<button onclick="start()">กดตรงนี้สิ 💖</button>
+<h1>สุขสันต์วันวาเลนไทน์นะครับ 💖</h1>
+
+<button id="btn" onclick="start()">กดตรงนี้สิ 💞</button>
 
 <div id="gallery">
-  <p id="loveText">
-ขอให้เราสองคนมีความสุขด้วยกันไปนาน ๆ นะ 💕
-</p>
-<img id="slide">
+  <h2>💗 ภาพของเรา 💗</h2>
+
+  <div class="heartCircle" style="top:-15px; left:50%; transform:translateX(-50%) rotate(0deg) translateY(-120px);"></div>
+  <div class="heartCircle" style="top:110px; left:12%; transform:translateX(-50%) rotate(45deg) translateY(-120px);"></div>
+  <div class="heartCircle" style="top:110px; left:88%; transform:translateX(-50%) rotate(-45deg) translateY(-120px);"></div>
+  <div class="heartCircle" style="top:210px; left:50%; transform:translateX(-50%) rotate(90deg) translateY(-120px);"></div>
+
+  <div class="slide"><img src="https://i.postimg.cc/WbMNWzn1/1_png.jpg"></div>
+  <div class="slide"><img src="https://i.postimg.cc/yYq6ycFD/3_png.jpg"></div>
+  <div class="slide"><img src="https://i.postimg.cc/ZKrb7ncK/4_png.jpg"></div>
 </div>
 
+<p id="loveText"></p>
+
+<div id="ytplayer" style="display:none;"></div>
+
+<script src="https://www.youtube.com/iframe_api"></script>
+
 <script>
-let images=[
-"https://i.postimg.cc/WbMNWzn1/1_png.jpg",
-"https://i.postimg.cc/yYq6ycFD/3_png.jpg",
-"https://i.postimg.cc/ZKrb7ncK/4_png.jpg"
-];
+// ====== MUSIC SETUP ======
+let player;
+let startSecond = 24;   // ⏱️ เปลี่ยนวินาทีเริ่มต้นได้
 
-let index=0;
-let started=false;
+function onYouTubeIframeAPIReady() {
+  player = new YT.Player('ytplayer', {
+    height: '0', width: '0',
+    videoId: 'RRSvzw8TdwI',
+    playerVars: {
+      autoplay:0, controls:0, start:startSecond
+    }
+  });
+}
 
+// ====== MAIN ======
+let started = false;
 function start(){
-if(started) return;
-started=true;
+  if(started) return;
+  started=true;
 
-document.getElementById("gallery").style.display="block";
-show();
-setInterval(show,2000);
-setInterval(createPetal,250);
-createHearts();
+  document.getElementById("btn").style.display="none";
+  document.getElementById("gallery").style.display="block";
+
+  showSlides();
+  playMusicFade();
+  makeFloatingHearts();
+  makeRosePetals();
+  typeLoveText("ขอให้เราสองคนมีความสุขด้วยกันไปนาน ๆ นะ 💕");
 }
 
-function show(){
-document.getElementById("slide").src=images[index];
-index=(index+1)%images.length;
+// ====== SLIDESHOW ======
+let sIndex=0;
+function showSlides(){
+  let slides=document.getElementsByClassName("slide");
+  for(let i=0;i<slides.length;i++){
+    slides[i].style.display="none";
+  }
+  sIndex++;
+  if(sIndex>slides.length) sIndex=1;
+  slides[sIndex-1].style.display="block";
+  setTimeout(showSlides,3000);
 }
 
-function createHearts(){
-let g=document.getElementById("gallery");
-let size=g.offsetWidth;
-let center=size/2;
+// ====== MUSIC FADE-IN ======
+function playMusicFade(){
+  player.seekTo(startSecond);
+  player.setVolume(0);
+  player.playVideo();
 
-for(let i=0;i<8;i++){
-let angle=(i/8)*2*Math.PI;
-let x=center+Math.cos(angle)*(center+10)-12;
-let y=center+Math.sin(angle)*(center+10)-12;
-
-let h=document.createElement("div");
-h.className="heart";
-h.innerHTML="❤";
-h.style.left=x+"px";
-h.style.top=y+"px";
-g.appendChild(h);
-}
+  let vol=0, fade = setInterval(()=>{
+    if(vol>=50) clearInterval(fade);
+    else {vol+=2; player.setVolume(vol);}
+  },200);
 }
 
-function createPetal(){
-let p=document.createElement("div");
-p.className="petal";
-p.style.left=Math.random()*100+"vw";
-p.style.animationDuration=(3+Math.random()*2)+"s";
-document.body.appendChild(p);
-setTimeout(()=>{p.remove();},5000);
+// ====== HEARTS & PETALS ======
+function makeFloatingHearts(){
+  setInterval(()=>{
+    let h = document.createElement("img");
+    h.src="https://upload.wikimedia.org/wikipedia/commons/4/49/Red_heart.svg";
+    h.className="floatingHeart";
+    h.style.left=Math.random()*100+"vw";
+    h.style.animationDuration=(4+Math.random()*3)+"s";
+    document.body.appendChild(h);
+    setTimeout(()=>h.remove(),6000);
+  },400);
+}
+
+function makeRosePetals(){
+  setInterval(()=>{
+    let p = document.createElement("img");
+    p.src="https://upload.wikimedia.org/wikipedia/commons/3/35/Rose_icon.svg";
+    p.className="rosePetal";
+    p.style.left=Math.random()*100+"vw";
+    p.style.animationDuration=(5+Math.random()*3)+"s";
+    document.body.appendChild(p);
+    setTimeout(()=>p.remove(),9000);
+  },700);
+}
+
+// ====== TYPEWRITER TEXT ======
+function typeLoveText(text){
+  let el = document.getElementById("loveText");
+  let i=0;
+  el.style.opacity=1;
+  let timer = setInterval(()=>{
+    el.innerHTML += text.charAt(i);
+    i++;
+    if(i>=text.length) clearInterval(timer);
+  },80);
 }
 </script>
 
