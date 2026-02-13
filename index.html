@@ -55,10 +55,22 @@ h1{
   position:absolute;
   top:50%;
   left:50%;
-  width:320px;
-  height:320px;
+  width:360px;
+  height:360px;
   transform:translate(-50%,-50%);
+  animation:spin 15s linear infinite;
   pointer-events:none;
+}
+
+@keyframes spin{
+  0%{transform:translate(-50%,-50%) rotate(0deg);}
+  100%{transform:translate(-50%,-50%) rotate(360deg);}
+}
+
+.heartRing span{
+  position:absolute;
+  font-size:22px;
+  color:#ff3366;
 }
 
 .orbit{
@@ -186,24 +198,24 @@ function showSlides(){
 /* สร้างหัวใจเป็นวง */
 function createRing(){
 
-  let ring=document.getElementById("ring");
-  ring.innerHTML="";
+  let ring = document.getElementById("ring");
+  ring.innerHTML = "";
 
-  let total=18;
-  let radius=140;
-  let center=160;
+  let total = 20;
+  let radius = 150;
+  let center = 180;
 
   for(let i=0;i<total;i++){
 
-    let angle=(i/total)*2*Math.PI;
+    let angle = (i/total)*2*Math.PI;
 
-    let x=center + radius*Math.cos(angle);
-    let y=center + radius*Math.sin(angle);
+    let x = center + radius*Math.cos(angle);
+    let y = center + radius*Math.sin(angle);
 
-    let span=document.createElement("span");
-    span.innerHTML="❤";
-    span.style.left=x+"px";
-    span.style.top=y+"px";
+    let span = document.createElement("span");
+    span.innerHTML = "❤";
+    span.style.left = x + "px";
+    span.style.top = y + "px";
 
     ring.appendChild(span);
   }
@@ -213,12 +225,13 @@ function createRing(){
 function fallingRoses(){
   setInterval(()=>{
     let r=document.createElement("div");
+    r.innerHTML="🌹";
     r.className="rose";
     r.style.left=Math.random()*100+"vw";
     r.style.animationDuration=(6+Math.random()*4)+"s";
     document.body.appendChild(r);
     setTimeout(()=>r.remove(),9000);
-  },800);
+  },700);
 }
 
 /* หัวใจลอย */
